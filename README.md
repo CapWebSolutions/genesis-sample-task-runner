@@ -15,7 +15,7 @@ for [Genesis Sample](https://github.com/copyblogger/genesis-sample), a child the
 
 ## How to use
 
-0. Install WordPress on your localhost if you haven't already. I use [Laravel Valet](https://laravel.com/docs/5.6/valet).
+0. Install WordPress on your local development environemnt if you haven't already. I use [Local By Flywheel](https://local.getflywheel.com/) for Windows 10.
 
 1. Install [Node](https://nodejs.org/download/).
 
@@ -25,7 +25,7 @@ for [Genesis Sample](https://github.com/copyblogger/genesis-sample), a child the
 
 4. Run `npm install`.
 
-5. Change the values of `siteName` and `userName` in gulpfile.js.
+5. Change the values of `siteName` and `userName` in gulpfile.js. Note: As of 10/12/18 the userName parm has yet to be utilized.
 
 If your local site does not have a SSL, you can comment out the `userName` line and comment out/delete
 
@@ -36,9 +36,12 @@ https: {
 }
 ```
 
-If it does, adjust the path to your local SSL certificate's key and crt files.
+If it does, adjust the path to your local SSL certificate's key and crt files. These values have yet to be determined for LBF SSL setup.
 
 6. Run `gulp`.
+
+---
+*The steps below have not been tested on Windows 10 yet.*
 
 7. You might want to load the minified versions of `genesis-sample.js` and `style.css` on the production site before going live.
 
