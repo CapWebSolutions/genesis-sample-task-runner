@@ -3,7 +3,7 @@
  *
  * This file adds Gulp tasks to the theme.
  *
- * @author Sridhar Katakam
+ * @author Matt Ryan
  */
 
 // Require our dependencies.
@@ -23,8 +23,8 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 
 // Project specific variables - CHANGE THESE
-const siteName = 'genesis-sample.test'; // set your siteName here
-const userName = 'sridharkatakam'; // set your Mac OS userName here
+const siteName = 'localbyflywheel.local/'; // set your local by Flywheel siteName here - note ending slash
+const userName = 'local_sites'; // set your local project directory userName here
 
 /**
  * Error handling
@@ -32,18 +32,17 @@ const userName = 'sridharkatakam'; // set your Mac OS userName here
  * @function
  */
 function handleErrors() {
-	const args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
 
-	notify
-		.onError({
-			title: 'Task Failed [<%= error.message %>]',
-			message:
-				'<%= error %> - See console or enable logging in the plugin.'
-		})
-		.apply(this, args);
+    notify
+        .onError({
+            title: 'Task Failed [<%= error.message %>]',
+            message: '<%= error %> - See console or enable logging in the plugin.'
+        })
+        .apply(this, args);
 
-	// Prevent the 'watch' task from stopping
-	this.emit('end');
+    // Prevent the 'watch' task from stopping
+    this.emit('end');
 }
 
 /*************
@@ -54,103 +53,103 @@ function handleErrors() {
  * PostCSS Task Handler
  */
 gulp.task('postcss', () => {
-	gulp
-		.src('./sass/style.scss')
+    gulp
+        .src('./sass/style.scss')
 
-		// Error handling.
-		.pipe(
-			plumber({
-				errorHandler: handleErrors
-			})
-		)
+    // Error handling.
+    .pipe(
+        plumber({
+            errorHandler: handleErrors
+        })
+    )
 
-		// Wrap tasks in a sourcemap.
-		.pipe(sourcemaps.init())
+    // Wrap tasks in a sourcemap.
+    .pipe(sourcemaps.init())
 
-		// Sass magic.
-		.pipe(
-			sass({
-				errLogToConsole: true,
-				outputStyle: 'expanded' // Options: nested, expanded, compact, compressed
-			})
-		)
+    // Sass magic.
+    .pipe(
+        sass({
+            errLogToConsole: true,
+            outputStyle: 'expanded' // Options: nested, expanded, compact, compressed
+        })
+    )
 
-		// Pixel fallbacks for rem units.
-		.pipe(pixrem())
+    // Pixel fallbacks for rem units.
+    .pipe(pixrem())
 
-		// PostCSS magic.
-		.pipe(
-			postcss([
-				autoprefixer(),
-				mqpacker({
-					sort: true
-				})
-			])
-		)
+    // PostCSS magic.
+    .pipe(
+        postcss([
+            autoprefixer(),
+            mqpacker({
+                sort: true
+            })
+        ])
+    )
 
-		// Create the source map.
-		.pipe(
-			sourcemaps.write('./', {
-				includeContent: false
-			})
-		)
+    // Create the source map.
+    .pipe(
+        sourcemaps.write('./', {
+            includeContent: false
+        })
+    )
 
-		// Write the CSS file.
-		.pipe(gulp.dest('./'))
+    // Write the CSS file.
+    .pipe(gulp.dest('./'))
 
-		// Inject CSS into Browser.
-		.pipe(browserSync.stream());
+    // Inject CSS into Browser.
+    .pipe(browserSync.stream());
 });
 
 /**
  * Minify style.css
  */
 gulp.task('css:minify', ['postcss'], () => {
-	gulp
-		.src('./style.css')
+    gulp
+        .src('./style.css')
 
-		// Error handling.
-		.pipe(
-			plumber({
-				errorHandler: handleErrors
-			})
-		)
+    // Error handling.
+    .pipe(
+        plumber({
+            errorHandler: handleErrors
+        })
+    )
 
-		// Combine similar rules.
-		.pipe(
-			cleancss({
-				level: {
-					2: {
-						all: true
-					}
-				}
-			})
-		)
+    // Combine similar rules.
+    .pipe(
+        cleancss({
+            level: {
+                2: {
+                    all: true
+                }
+            }
+        })
+    )
 
-		// Minify and optimize style.css.
-		.pipe(
-			cssnano({
-				safe: false,
-				discardComments: {
-					removeAll: true
-				}
-			})
-		)
+    // Minify and optimize style.css.
+    .pipe(
+        cssnano({
+            safe: false,
+            discardComments: {
+                removeAll: true
+            }
+        })
+    )
 
-		// Rename the file.
-		.pipe(rename('style.min.css'))
+    // Rename the file.
+    .pipe(rename('style.min.css'))
 
-		// Write the file.
-		.pipe(gulp.dest('./'))
+    // Write the file.
+    .pipe(gulp.dest('./'))
 
-		// Inject the CSS into the browser.
-		.pipe(browserSync.stream())
+    // Inject the CSS into the browser.
+    .pipe(browserSync.stream())
 
-		.pipe(
-			notify({
-				message: 'Styles are built.'
-			})
-		);
+    .pipe(
+        notify({
+            message: 'Styles are built.'
+        })
+    );
 });
 
 /*******************
@@ -161,40 +160,40 @@ gulp.task('css:minify', ['postcss'], () => {
  * JavaScript Task Handler.
  */
 gulp.task('js', () => {
-	gulp
-		.src(['!./js/*.min.js', './js/*.js'])
+    gulp
+        .src(['!./js/*.min.js', './js/*.js'])
 
-		// Error handling.
-		.pipe(
-			plumber({
-				errorHandler: handleErrors
-			})
-		)
+    // Error handling.
+    .pipe(
+        plumber({
+            errorHandler: handleErrors
+        })
+    )
 
-		// Minify JavaScript.
-		.pipe(
-			minify({
-				ext: {
-					src: '.js',
-					min: '.min.js'
-				},
-				noSource: true
-			})
-		)
-		.pipe(gulp.dest('js'))
+    // Minify JavaScript.
+    .pipe(
+            minify({
+                ext: {
+                    src: '.js',
+                    min: '.min.js'
+                },
+                noSource: true
+            })
+        )
+        .pipe(gulp.dest('js'))
 
-		// Inject changes via browserSync.
-		.pipe(
-			browserSync.reload({
-				stream: true
-			})
-		)
+    // Inject changes via browserSync.
+    .pipe(
+        browserSync.reload({
+            stream: true
+        })
+    )
 
-		.pipe(
-			notify({
-				message: 'Scripts are minified.'
-			})
-		);
+    .pipe(
+        notify({
+            message: 'Scripts are minified.'
+        })
+    );
 });
 
 /**********************
@@ -207,31 +206,32 @@ gulp.task('js', () => {
  * https://browsersync.io/docs/gulp
  */
 gulp.task('watch', () => {
-	browserSync.init({
-		proxy: `https://${siteName}`,
-		host: siteName,
-		open: 'external',
-		port: 8000,
-		https: {
-			key: `/Users/${userName}/.valet/Certificates/${siteName}.key`,
-			cert: `/Users/${userName}/.valet/Certificates/${siteName}.crt`
-		}
-	});
+    browserSync.init({
+        proxy: `http://${siteName}`,
+        host: siteName,
+        // open: 'external',
+        open: 'local', // Needed to LBF install
+        port: 8000,
+        // https: {
+        // 	key: `/Users/${userName}/.valet/Certificates/${siteName}.key`,
+        // 	cert: `/Users/${userName}/.valet/Certificates/${siteName}.crt`
+        // }
+    });
 
-	// Watch Scss files. Changes are injected into the browser from within the task.
-	gulp.watch('./sass/**/*.scss', ['styles']);
+    // Watch Scss files. Changes are injected into the browser from within the task.
+    gulp.watch('./sass/**/*.scss', ['styles']);
 
-	// Watch JavaScript Files. The task tries to inject changes into the browser. If that's not possible, it reloads the browser.
-	gulp.watch(['./js/*.js', '!./js/*.min.js'], ['scripts']);
+    // Watch JavaScript Files. The task tries to inject changes into the browser. If that's not possible, it reloads the browser.
+    gulp.watch(['./js/*.js', '!./js/*.min.js'], ['scripts']);
 
-	// Watch PHP files and reload the browser if there is a change. Add directories if needed.
-	gulp
-		.watch([
-			'./*.php',
-			'./lib/*.php',
-			'./lib/**/*.php'
-		])
-		.on('change', browserSync.reload);
+    // Watch PHP files and reload the browser if there is a change. Add directories if needed.
+    gulp
+        .watch([
+            './*.php',
+            './lib/*.php',
+            './lib/**/*.php'
+        ])
+        .on('change', browserSync.reload);
 });
 
 /********************
@@ -241,5 +241,5 @@ gulp.task('styles', ['css:minify']);
 gulp.task('scripts', ['js']);
 
 gulp.task('default', ['watch'], () => {
-	gulp.start('styles', 'scripts');
+    gulp.start('styles', 'scripts');
 });
